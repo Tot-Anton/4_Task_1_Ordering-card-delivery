@@ -197,6 +197,19 @@ public class OrderingCardDeliveryTest {
     }
 
     @Test
+    //Тестирование функциональности (Указали только фамилия)
+    public void testedFunctionalityV11() {
+        $("[data-test-id=city] input").setValue("Владимир");
+        $("[placeholder='Дата встречи']").sendKeys(Keys.SHIFT, Keys.HOME, Keys.BACK_SPACE);
+        $("[placeholder='Дата встречи']").setValue(dateOfTheMeeting);
+        $("[data-test-id=name] input").setValue("Пушкин");
+        $("[data-test-id=phone] input").setValue("+79200001100");
+        $("[data-test-id=agreement]").click();
+        $(withText("Забронировать")).click();
+        $("[data-test-id=name] .input__sub").shouldHave(exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+    }
+
+    @Test
     //Тестирование функциональности (чек-бокс не отмечен)
     public void testedFunctionalityV() {
 
