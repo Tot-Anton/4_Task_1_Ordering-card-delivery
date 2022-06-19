@@ -209,11 +209,55 @@ public class OrderingCardDeliveryTest {
         $("[data-test-id=name] .input__sub").shouldHave(exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
     }
 
+
     @Test
     //Тестирование функциональности (чек-бокс не отмечен)
-    public void testedFunctionalityV() {
-
+    public void testedFunctionalityV12() {
+        $("[data-test-id=city] input").setValue("Владимир");
+        $("[placeholder='Дата встречи']").sendKeys(Keys.SHIFT, Keys.HOME, Keys.BACK_SPACE);
+        $("[placeholder='Дата встречи']").setValue(dateOfTheMeeting);
+        $("[data-test-id=name] input").setValue("Пушкин Александр");
+        $("[data-test-id=phone] input").setValue("+79200001100");
+        //$("[data-test-id=agreement]").click();
+        $(withText("Забронировать")).click();
+        $("[data-test-id=agreement]").should(cssClass("input_invalid"));
     }
 
+
+    @Test
+    //Тестирование функциональности (не указана дата)
+    public void testedFunctionalityV13() {
+        $("[data-test-id=city] input").setValue("Владимир");
+        //$("[placeholder='Дата встречи']").sendKeys(Keys.SHIFT, Keys.HOME, Keys.BACK_SPACE);
+        //$("[placeholder='Дата встречи']").setValue(dateOfTheMeeting);
+        $("[data-test-id=name] input").setValue("Пушкин Александр");
+        $("[data-test-id=phone] input").setValue("+79200001100");
+        $("[data-test-id=agreement]").click();
+        $(withText("Забронировать")).click();
+        $("[data-test-id=date] .input__sub").shouldHave(exactText("Выберите дату встречи с представителем банка"));
+    }
+
+    @Test
+    //Тестирование функциональности (дата из прошлого)
+    public void testedFunctionalityV14() {
+
+        LocalDate currentDate = LocalDate.now().plusDays(-20);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String dateOfTheMeeting = currentDate.format(formatter);
+
+        $("[data-test-id=city] input").setValue("Владимир");
+        $("[placeholder='Дата встречи']").sendKeys(Keys.SHIFT, Keys.HOME, Keys.BACK_SPACE);
+        $("[placeholder='Дата встречи']").setValue(dateOfTheMeeting);
+        $("[data-test-id=name] input").setValue("Пушкин Александр");
+        $("[data-test-id=phone] input").setValue("+79200001100");
+        $("[data-test-id=agreement]").click();
+        $(withText("Забронировать")).click();
+        $("[data-test-id=date] .input__sub").shouldHave(exactText("Заказ на выбранную дату невозможен"));
+    }
+
+
+
+
+    
 
 }
