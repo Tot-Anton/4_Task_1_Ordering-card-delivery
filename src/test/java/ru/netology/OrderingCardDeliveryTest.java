@@ -254,10 +254,6 @@ public class OrderingCardDeliveryTest {
         $(withText("Забронировать")).click();
         $("[data-test-id=date] .input__sub").shouldHave(exactText("Заказ на выбранную дату невозможен"));
     }
-
-
-
-
     
 
 }
