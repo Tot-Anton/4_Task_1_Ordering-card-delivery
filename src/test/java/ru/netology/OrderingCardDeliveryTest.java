@@ -16,16 +16,22 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class OrderingCardDeliveryTest {
 
+    public static String generateDate(int date) {
+        return LocalDate.now().plusDays(date).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
+
+    String dateOfTheMeeting = generateDate(3);
+
 
     //LocalDate - это неизменяемый объект даты и времени, который представляет дату, часто рассматриваемую как год-месяц-день.
     // Также можно получить доступ к другим полям даты, таким как день года, день недели и неделя года.
     //plusDays - этот метод добавляет указанную сумму в поле дней
-    LocalDate currentDate = LocalDate.now().plusDays(3);
+    //LocalDate currentDate = LocalDate.now().plusDays(3);
 
     //Этот метод создаст средство форматирования на основе простого набора букв и символов, как описано в документации к классу.
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    String dateOfTheMeeting = currentDate.format(formatter);
+    //String dateOfTheMeeting = currentDate.format(formatter);
 
 
     @BeforeEach
@@ -241,9 +247,7 @@ public class OrderingCardDeliveryTest {
     //Тестирование функциональности (дата из прошлого)
     public void testedFunctionalityV14() {
 
-        LocalDate currentDate = LocalDate.now().plusDays(-20);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        String dateOfTheMeeting = currentDate.format(formatter);
+        String dateOfTheMeeting = generateDate(-20);
 
         $("[data-test-id=city] input").setValue("Владимир");
         $("[placeholder='Дата встречи']").sendKeys(Keys.SHIFT, Keys.HOME, Keys.BACK_SPACE);
@@ -254,6 +258,6 @@ public class OrderingCardDeliveryTest {
         $(withText("Забронировать")).click();
         $("[data-test-id=date] .input__sub").shouldHave(exactText("Заказ на выбранную дату невозможен"));
     }
-    
+
 
 }
